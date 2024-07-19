@@ -43,7 +43,7 @@ with st.sidebar:
 
 
 st.title('🤖 Data to Insights')
-st.markdown("Unlock Actionable Insights from Your Machine Data")
+st.subheader("Unlock Actionable Insights from Your Machine Data")
 st.markdown("")
 st.markdown("")
 
