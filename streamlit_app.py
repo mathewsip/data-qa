@@ -54,6 +54,7 @@ if uploaded_file_w and uploaded_file_m:
     dfe = pd.read_csv(uploaded_file_w)
     dfr = pd.read_csv(uploaded_file_m)
     
+    
     # Connect to the SQLite database
     conn = sqlite3.connect('Data.db')
     
