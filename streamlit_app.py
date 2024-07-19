@@ -44,14 +44,14 @@ st.markdown("")
 col1, col2 = st.columns(2)
 
 with col1:
-    uploaded_file_w = st.file_uploader("**Upload Wastage File (.xlsx)**", type=("xlsx"))
+    uploaded_file_w = st.file_uploader("**Upload Wastage File (.csv)**", type=("csv"))
 
 with col2:
     uploaded_file_m = st.file_uploader("**Upload Maintenance File (.csv)**", type=("csv"))
 
 if uploaded_file_w and uploaded_file_m:
     # Read the uploaded files
-    dfe = pd.read_excel(uploaded_file_w)
+    dfe = pd.read_csv(uploaded_file_w)
     dfr = pd.read_csv(uploaded_file_m)
     
     # Connect to the SQLite database
