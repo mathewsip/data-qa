@@ -27,18 +27,19 @@ st.markdown("")
  
 
 with st.sidebar:
-  st.markdown("")
-  st.markdown("")
-    # Input fields for battery parameters
-  st.subheader('**How to Use:**')
-  st.write('''
+    st.markdown("")
+    st.markdown("")
+    st.markdown("")
+    st.markdown("")
+    st.subheader('**How to Use:**')
+    st.write('''
 
-  1. 📄 Upload your Data.
-  2. Click the "Prepare for Analysis" Button.
-  3. Ask Questions! 📊.
+    1. 📄 Upload Wastage and Maintenance files.
+    2. Wait for the files to upload.
+    3. Ask Questions! 📊
 
-  ''')
-  st.markdown("")
+    ''')
+    st.markdown("")
 
 
 st.title('🤖 Text to Insights')
