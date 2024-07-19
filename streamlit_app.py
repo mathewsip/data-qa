@@ -1,12 +1,19 @@
 import streamlit as st
+import pandas as pd
 from langchain_community.utilities import SQLDatabase
 from langchain.callbacks import StreamlitCallbackHandler
 from langchain_openai import ChatOpenAI
 from langchain_community.agent_toolkits import create_sql_agent
+import os
+import sqlite3
+
 
 # Alternatively, you can store the API key in `./.streamlit/secrets.toml` and access it
 # via `st.secrets`, see https://docs.streamlit.io/develop/concepts/connections/secrets-management
-openai_api_key = st.secrets["OPEN_API_KEY"]
+#openai_api_key = st.secrets["OPEN_API_KEY"]
+os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"]
+os.environ["LANGCHAIN_API_KEY"] = st.secrets["LANGCHAIN_API_KEY"]
+os.environ["LANGCHAIN_TRACING_V2"] = "true" 
 
 
 
@@ -21,8 +28,6 @@ st.markdown("")
 
 with st.sidebar:
   st.markdown("")
-  st.markdown(':robot: Text to Analytics')
-  st.markdown("")
   st.markdown("")
     # Input fields for battery parameters
   st.subheader('**How to Use:**')
@@ -36,10 +41,46 @@ with st.sidebar:
   st.markdown("")
 
 
-llm = ChatOpenAI(model="gpt-4o", temperature=0.2)
-db = SQLDatabase.from_uri("sqlite:///Delta_MUV_May.db")
+st.title('🤖 Text to Insights')
+st.markdown("")
+st.markdown("")
 
-agent = create_sql_agent(llm, db=db, agent_type="openai-tools", verbose=True)
+col1, col2 = st.columns(2)
+
+with col1:
+    uploaded_file_w = st.file_uploader("**Upload Wastage File (.xlsx)**", type=("xlsx"))
+
+with col2:
+    uploaded_file_m = st.file_uploader("**Upload Maintenance File (.csv)**", type=("csv"))
+
+if uploaded_file_w and uploaded_file_m:
+    # Read the uploaded files
+    dfe = pd.read_excel(uploaded_file_w)
+    dfr = pd.read_csv(uploaded_file_m)
+    
+    # Connect to the SQLite database
+    conn = sqlite3.connect('Data.db')
+    
+    # Save dataframes to SQL tables
+    dfe.to_sql('Wastage_Data', conn, index=False, if_exists='replace')
+    dfr.to_sql('Maintenance_Data', conn, index=False, if_exists='replace')
+    
+    # Commit and close the connection
+    conn.commit()
+    conn.close()
+    
+    st.success("Files have been successfully uploaded.")
+
+
+st.markdown("")
+st.markdown("")
+
+
+llm = ChatOpenAI(model="gpt-4o", temperature=0.2)
+db = SQLDatabase.from_uri("sqlite:///Data.db")
+#db = SQLDatabase.from_uri("sqlite:///Delta_MUV_May.db")
+
+agent = create_sql_agent(llm, db=db, agent_type="openai-tools", verbose=False)
 
 if "messages" not in st.session_state or st.sidebar.button("New Conversation"):
     st.session_state["messages"] = [{"role": "assistant", "content": "Hi Nithin, how can I help you today?"}]

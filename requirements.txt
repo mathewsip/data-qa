@@ -4,3 +4,4 @@ langchain-community
 langchain-openai
 langchain-experimental
 pysqlite3-binary
+pandas
