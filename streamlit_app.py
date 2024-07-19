@@ -8,9 +8,6 @@ import os
 import sqlite3
 
 
-# Alternatively, you can store the API key in `./.streamlit/secrets.toml` and access it
-# via `st.secrets`, see https://docs.streamlit.io/develop/concepts/connections/secrets-management
-#openai_api_key = st.secrets["OPEN_API_KEY"]
 os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"]
 os.environ["LANGCHAIN_API_KEY"] = st.secrets["LANGCHAIN_API_KEY"]
 os.environ["LANGCHAIN_TRACING_V2"] = "true" 
@@ -22,9 +19,6 @@ os.environ["LANGCHAIN_TRACING_V2"] = "true"
 # Increase the default width of the main area by 50%
 st.set_page_config(layout="wide")
 
-st.markdown("")
-st.markdown("")
- 
 
 with st.sidebar:
     st.markdown("")
@@ -43,7 +37,7 @@ with st.sidebar:
 
 
 st.title('🤖 Data to Insights')
-st.subheader("Unlock Actionable Insights from Your Machine Data")
+st.markdown("#### Unlock Actionable Insights from Your Machine Data")
 st.markdown("")
 st.markdown("")
 
@@ -76,7 +70,7 @@ if uploaded_file_w and uploaded_file_m:
 
 st.markdown("")
 st.markdown("")
-
+st.markdown("")
 
 llm = ChatOpenAI(model="gpt-4o", temperature=0.2)
 db = SQLDatabase.from_uri("sqlite:///Data.db")
